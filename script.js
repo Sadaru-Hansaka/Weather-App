@@ -43,3 +43,15 @@ async function getWeather(city){
 searchbtn.addEventListener("click", ()=>{
     getWeather(searchBox.value);
 });
+
+// Fetch initial weather data
+const initialLocation = 'Galle'; // Default location
+getWeather(initialLocation);
+
+// Update data every 1 minitue
+setInterval(() => {
+    const currentLocation = searchBox.value;
+    if (currentLocation) {
+        getWeatherWeather(currentLocation);
+    }
+},6000); // 1 minute
