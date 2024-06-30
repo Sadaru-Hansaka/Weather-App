@@ -15,6 +15,7 @@ async function getWeather(city){
     }else{
         const data = await resp.json();
         console.log(data);
+        cityTimeOffset = data.timezone;
         
         document.querySelector(".city").innerHTML = data.name;
         document.querySelector(".temp").innerHTML =Math.round(data.main.temp) + "°C";
@@ -31,7 +32,8 @@ async function getWeather(city){
 }
 
 function updateWeathericon(data){
-    const currentHour = new Date().getHours();
+    const cityTime = getCityTime();
+    const currentHour = cityTime.getHours();
     if(data.weather[0].main=="Clouds"){
         if (currentHour >= 6 && currentHour < 18) {
             weather_icon.src="images/day-clouds.png";
@@ -84,9 +86,18 @@ function updateWeathericon(data){
 };
 setInterval(() => {
     if (currentWeatherData) {
-        updateWeatherIconAndBackground(currentWeatherData);
+        updateWeathericon(currentWeatherData);
     }
 }, 60000);
+
+function getCityTime() {
+    const d = new Date();
+    const localTime = d.getTime();
+    const localOffset = d.getTimezoneOffset() * 60000;
+    const utc = localTime + localOffset;
+    const cityTime = new Date(utc + (cityTimeOffset * 1000));
+    return cityTime;
+}
 
 searchbtn.addEventListener("click", ()=>{
     getWeather(searchBox.value);
@@ -106,11 +117,11 @@ setInterval(() => {
 
 
 
-// get time & date
+// get time and date according to the city
 setInterval(() => {
-    let d = new Date();
-    let time = d.toLocaleTimeString();
-    let date = d.toLocaleDateString();
+    const cityTime = getCityTime();
+    const time = cityTime.toLocaleTimeString();
+    const date = cityTime.toLocaleDateString();
     document.querySelector(".Time").innerHTML = time;
     document.querySelector(".Date").innerHTML = date;
-},1000)
+}, 1000);
