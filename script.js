@@ -2,8 +2,9 @@ const apiKey ="4b5ee782cafe18a02317076e6a68e150";
 const apiUrl = "https://api.openweathermap.org/data/2.5/weather?units=metric&q=";
 
 const searchBox = document.querySelector(".search input");
-const searchbtn = document.querySelector(".search button");
+const searchbtn = document.querySelector(".search-btn");
 const weather_icon = document.querySelector(".weather-icon");
+const plusIcon = document.querySelector(".plus-icon");
 
 
 async function getWeather(city){
@@ -32,10 +33,13 @@ async function getWeather(city){
 }
 
 function updateWeathericon(data){
-    const cityTime = getCityTime();
-    const currentHour = cityTime.getHours();
+    
+    const currentTime = new Date().getTime() / 1000; 
+    const sunrise_time = data.sys.sunrise;
+    const sunset_time = data.sys.sunset;
+
     if(data.weather[0].main=="Clouds"){
-        if (currentHour >= 6 && currentHour < 18) {
+        if (sunrise_time<=currentTime && sunset_time >= currentTime) {
             weather_icon.src="images/day-clouds.png";
             document.querySelector(".card").style.background="linear-gradient(to bottom, #00c6ff, #0072ff)";
         }else{
@@ -43,7 +47,7 @@ function updateWeathericon(data){
             document.querySelector(".card").style.background="linear-gradient(to bottom, #0f0c29, #302b63, #24243e)";
         }
     }else if(data.weather[0].main=="Clear"){
-        if (currentHour >= 6 && currentHour < 18) {
+        if (sunrise_time<=currentTime && sunset_time >= currentTime) {
             weather_icon.src="images/day-clear.png";
             document.querySelector(".card").style.background="linear-gradient(to bottom, #00c6ff, #0072ff)";
         }else{
@@ -51,7 +55,7 @@ function updateWeathericon(data){
             document.querySelector(".card").style.background="linear-gradient(to bottom, #0f0c29, #302b63, #24243e)";
         }
     }else if(data.weather[0].main=="Rain"){
-        if (currentHour >= 6 && currentHour < 18) {
+        if (sunrise_time<=currentTime && sunset_time >= currentTime) {
             weather_icon.src="images/day-rain.png";
             document.querySelector(".card").style.background="linear-gradient(to bottom, #00c6ff, #0072ff)";
         }else{
@@ -59,7 +63,7 @@ function updateWeathericon(data){
             document.querySelector(".card").style.background="linear-gradient(to bottom, #0f0c29, #302b63, #24243e)";
         }
     }else if(data.weather[0].main=="Drizzle"){
-        if (currentHour >= 6 && currentHour < 18) {
+        if (sunrise_time<=currentTime && sunset_time >= currentTime) {
             weather_icon.src="images/day-drizzle.png";
             document.querySelector(".card").style.background="linear-gradient(to bottom, #00c6ff, #0072ff)";
         }else{
@@ -67,7 +71,7 @@ function updateWeathericon(data){
             document.querySelector(".card").style.background="linear-gradient(to bottom, #0f0c29, #302b63, #24243e)";
         }
     }else if(data.weather[0].main=="Mist"){
-        if (currentHour >= 6 && currentHour < 18) {
+        if (sunrise_time<=currentTime && sunset_time >= currentTime) {
             weather_icon.src="images/day-mist.png"; 
             document.querySelector(".card").style.background="linear-gradient(to bottom, #00c6ff, #0072ff)";
         }else{
@@ -75,7 +79,7 @@ function updateWeathericon(data){
             document.querySelector(".card").style.background="linear-gradient(to bottom, #0f0c29, #302b63, #24243e)";
         }
     }else if(data.weather[0].main=="Snow"){
-        if (currentHour >= 6 && currentHour < 18) {
+        if (sunrise_time<=currentTime && sunset_time >= currentTime) {
             weather_icon.src="images/day-snow.png";
             document.querySelector(".card").style.background="linear-gradient(to bottom, #00c6ff, #0072ff)";
         }else{
@@ -90,6 +94,7 @@ setInterval(() => {
     }
 }, 60000);
 
+let cityTimeOffset;
 function getCityTime() {
     const d = new Date();
     const localTime = d.getTime();
@@ -102,10 +107,18 @@ function getCityTime() {
 searchbtn.addEventListener("click", ()=>{
     getWeather(searchBox.value);
 });
+const cityArray = [];
+plusIcon.addEventListener("click", ()=>{
+    let city = searchBox.value;
+    if (city && !cityArray.includes(city)) {
+        cityArray.push(city);
+        console.log(cityArray);
+    }
+});
 
 // Fetch initial weather data
-const initialLocation = 'Galle'; // Default location
-getWeather(initialLocation);
+// const initialLocation = 'Galle'; 
+// getWeather(initialLocation);
 
 // Update data every 1 minitue
 setInterval(() => {
