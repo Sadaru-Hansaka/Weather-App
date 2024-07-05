@@ -8,12 +8,13 @@ body{
     background-color: #222;
 }
 
+/* search bar and display weather part */
 .card{
     width: 90%;
     max-width: 470px;
     background: linear-gradient(135deg, #00feba, #5b548a);
     color: #fff;
-    margin: 100px auto 0;
+    margin: 60px auto 0;
     border-radius: 20px;
     padding: 40px 35px;
     text-emphasis: center;
@@ -51,22 +52,36 @@ body{
     width: 16px;
 }
 
-.weather{
-    width: 100%;
+/* ------------------------ */
+.weather {
+    display: flex;
+    align-items: center;
     text-align: center;
 }
+
 
 .weather-icon{
     width: 170px;
     margin-top: 30px;
+    margin-bottom: 20px;
 }
 
+/* Temperature */
 .weather h1{
     font-size: 80px;
     font-weight: 500;
 }
+
+/* Location */
 .weather h2{
     font-size: 45px;
+    font-weight: 400;
+    margin-top: 10px;
+}
+
+/* weather descripton */
+.weather h3{
+    font-size: 25px;
     font-weight: 400;
     margin-top: -10px;
 }
