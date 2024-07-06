@@ -1,3 +1,4 @@
+import Template from "./templateClass.js";
 // API key and API url
 const apiKey = "4b5ee782cafe18a02317076e6a68e150";
 const apiUrl = "https://api.openweathermap.org/data/2.5/weather?units=metric";
@@ -43,6 +44,8 @@ async function getWeather(lat, lon) {
     }
 }
 
+
+
 function displayWeather(data) {
     cityTimeOffset = data.timezone;
 
@@ -52,7 +55,7 @@ function displayWeather(data) {
     document.querySelector(".humidity").innerHTML = data.main.humidity + "%";
     document.querySelector(".wind").innerHTML = data.wind.speed + "km/h";
 
-    currentWeatherData = data;
+    const currentWeatherData = data;
     updateWeathericon(data);
 
     document.querySelector(".weather").style.display = "block";
@@ -71,7 +74,6 @@ searchbtn.addEventListener("click", () => {
     getWeatherByCity(city);
 });
 
-// ----------------------------------------------------------------------------------
 const cityArray = [];
 plusIcon.addEventListener("click", () => {
     let city = searchBox.value;
@@ -79,11 +81,19 @@ plusIcon.addEventListener("click", () => {
         cityArray.push(city);
         console.log(cityArray);
     }
+    const cityContainer = document.querySelector(".right-side");
+    cityContainer.innerHTML = ''; // Clear the previous content
+
+    cityArray.forEach((city, index) => {
+        const template = new Template(`city-${index}`, city, index + 1);
+        const newBox = template.createBox();
+        cityContainer.appendChild(newBox);
+    });
 });
 // ---------------------------------------------------------------------------------------
 // Fetch initial weather data
-const initialLocation = 'Hapugala, Galle, Sri Lanka'; //default location
-getWeatherByCity(initialLocation);
+// const initialLocation = 'Hapugala, Galle, Sri Lanka'; //default location
+// getWeatherByCity(initialLocation);
 
 // Update data every 1 minute
 setInterval(() => {

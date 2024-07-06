@@ -9,49 +9,51 @@
 </head>
 <body>
     <div class="container">
-        <!-- main part(Search bar and display search item) -->
-        <div class="card">
-            <div class="search">
-                <input type="text" placeholder="Enter city name" spellcheck="false">
-                <button class="search-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
-                <button class="plus-icon"><i class="fa-solid fa-plus"></i></button>
-            </div>
-            <!-- if the searched city was not valid, display error -->
-            <div class="error">
-                <p>Invalid city name</p>
-            </div>
-            <!-- display weather -->
-            <div class="weather">
-                <img src="" class="weather-icon" alt="climate image">
-                <h3 class="description"></h3>
-                <p class="Time"></p>
-                <p class="Date"></p>
-                <h1 class="temp"></h1>
-                <h2 class="city"></h2>
-                <div class="details">
-                    <div class="col">
-                        <img src="images/humidity.png" alt="humidity image">
-                        <div>
-                            <p class="humidity"></p>
-                            <p>Humidity</p>
+        <div class="left-side">
+            <!-- main part(Search bar and display search item) -->
+            <div class="card">
+                <div class="search">
+                    <input type="text" placeholder="Enter city name" spellcheck="false">
+                    <button class="search-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
+                    <button class="plus-icon"><i class="fa-solid fa-plus"></i></button>
+                </div>
+                <!-- if the searched city was not valid, display error -->
+                <div class="error">
+                    <p>Invalid city name</p>
+                </div>
+                <!-- display weather -->
+                <div class="weather">
+                    <img src="" class="weather-icon" alt="climate image">
+                    <h3 class="description"></h3>
+                    <p class="Time"></p>
+                    <p class="Date"></p>
+                    <h1 class="temp"></h1>
+                    <h2 class="city"></h2>
+                    <div class="details">
+                        <div class="col">
+                            <img src="images/humidity.png" alt="humidity image">
+                            <div>
+                                <p class="humidity"></p>
+                                <p>Humidity</p>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col">
-                        <img src="images/wind.png" alt="wind image">
-                        <div>
-                            <p class="wind"></p>
-                            <p>Wind Speed</p>
+                        <div class="col">
+                            <img src="images/wind.png" alt="wind image">
+                            <div>
+                                <p class="wind"></p>
+                                <p>Wind Speed</p>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
         <!-- added templates -->
-        <div class="left-side">
-            <h1>template weather</h1>
+        <div class="right-side">
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <script type="module" src="script.js"></script>
+    <!-- <script src="app.js"></script> -->
 </body>
 </html>
