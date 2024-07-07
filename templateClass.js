@@ -1,8 +1,8 @@
 export default class Template{
-    constructor(id,cityName,no){
+    constructor(id,cityName,temp){
         this.id = id;
         this.cityName = cityName;
-        this.no = no;
+        this.temp = temp;
     }
 
     createBox() {
@@ -12,9 +12,9 @@ export default class Template{
         boxElement.style.border = '1px solid black';
         boxElement.style.padding = '10px';
         // boxElement.style.margin = '10px';
-        boxElement.innerText = this.content;
+
         
-        boxElement.innerText = `Name: ${this.cityName}`;
+        boxElement.innerText = `Name: ${this.cityName}/nTemperature: ${this.temp}`;
     
         // Append the box to the body (or any other container)
         // document.body.appendChild(boxElement);

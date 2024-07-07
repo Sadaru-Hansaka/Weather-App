@@ -8,6 +8,7 @@ const searchbtn = document.querySelector(".search-btn");
 const weather_icon = document.querySelector(".weather-icon");
 const plusIcon = document.querySelector(".plus-icon");
 
+let currentWeatherData;
 
 // get location by village,city,country
 async function getWeatherByCity(city) {
@@ -22,6 +23,7 @@ async function getWeatherByCity(city) {
             console.log(`Using location: ${name}, ${country} (${lat}, ${lon})`);
             getWeather(lat, lon);
             document.querySelector(".city").innerHTML = `${name}, ${country}`;
+            return await getWeather(lat, lon);
         } else {
             showError();
         }
@@ -29,6 +31,7 @@ async function getWeatherByCity(city) {
         console.error('Error fetching geocode data:', error);
         showError();
     }
+    return null;
 }
 
 async function getWeather(lat, lon) {
@@ -41,7 +44,9 @@ async function getWeather(lat, lon) {
     } else {
         const data = await resp.json();
         displayWeather(data);
+        return data;
     }
+    return null;
 }
 
 
@@ -55,7 +60,7 @@ function displayWeather(data) {
     document.querySelector(".humidity").innerHTML = data.main.humidity + "%";
     document.querySelector(".wind").innerHTML = data.wind.speed + "km/h";
 
-    const currentWeatherData = data;
+    currentWeatherData = data;
     updateWeathericon(data);
 
     document.querySelector(".weather").style.display = "block";
@@ -74,22 +79,33 @@ searchbtn.addEventListener("click", () => {
     getWeatherByCity(city);
 });
 
-const cityArray = [];
-plusIcon.addEventListener("click", () => {
-    let city = searchBox.value;
-    if (city && !cityArray.includes(city)) {
-        cityArray.push(city);
-        console.log(cityArray);
-    }
-    const cityContainer = document.querySelector(".right-side");
-    cityContainer.innerHTML = ''; // Clear the previous content
 
-    cityArray.forEach((city, index) => {
-        const template = new Template(`city-${index}`, city, index + 1);
-        const newBox = template.createBox();
-        cityContainer.appendChild(newBox);
-    });
+const cityArray = [];
+
+plusIcon.addEventListener("click", async () => {
+    const city = searchBox.value;
+    if (city && !cityArray.some(item => item.city === city)) {
+        const weatherData = await getWeatherByCity(city);
+        if (weatherData) {
+            cityArray.push({ city, data: weatherData });
+            console.log(cityArray);
+
+            const cityContainer = document.querySelector(".right-side");
+            cityContainer.innerHTML = ''; // Clear the previous content
+
+            cityArray.forEach((item, index) => {
+                const temp = item.data.main.temp; // Access temperature correctly
+                const cityName = item.data.name; // Access city name correctly
+                const template = new Template(`city-${index}`, cityName, temp);
+                const newBox = template.createBox();
+                cityContainer.appendChild(newBox);
+            });
+        }
+    }
 });
+
+
+
 // ---------------------------------------------------------------------------------------
 // Fetch initial weather data
 // const initialLocation = 'Hapugala, Galle, Sri Lanka'; //default location
