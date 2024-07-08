@@ -1,4 +1,4 @@
-import Template from "./templateClass.js";
+
 // API key and API url
 const apiKey = "4b5ee782cafe18a02317076e6a68e150";
 const apiUrl = "https://api.openweathermap.org/data/2.5/weather?units=metric";
@@ -111,12 +111,7 @@ plusIcon.addEventListener("click", async () => {
 });
 
 
-
-
 // ---------------------------------------------------------------------------------------
-// Fetch initial weather data
-// const initialLocation = 'Hapugala, Galle, Sri Lanka'; //default location
-// getWeatherByCity(initialLocation);
 
 // Update data every 1 minute
 setInterval(() => {
@@ -192,4 +187,51 @@ function getCityTime() {
     const utc = localTime + localOffset;
     const cityTime = new Date(utc + (cityTimeOffset * 1000));
     return cityTime;
+};
+
+
+class Template{
+    constructor(id,cityName,temp,){
+        this.id = id;
+        this.cityName = cityName;
+        this.temp = temp;
+    }
+
+    createBox() {
+        // Create a div element for the box
+        const boxElement = document.createElement('div');
+        boxElement.classList.add('template_box');
+
+         // Create a span for the close icon
+        const closeIcon = document.createElement('span');
+        closeIcon.innerHTML = '&times;'; // HTML entity for '×'
+        closeIcon.classList.add('close_icon');
+        closeIcon.style.cursor = 'pointer'; // Make the icon look clickable
+ 
+        closeIcon.addEventListener('click', () => {
+            console.log("Clicked")
+            boxElement.remove();
+            cityArray.splice(this.cityName,1);
+            console.log(cityArray);
+
+            // const index = cityArray.findIndex(item => item.city === this.cityName);
+            // if (index !== -1) {
+            //     cityArray.splice(index, 1);
+            //     console.log(cityArray);
+            // }
+        });
+
+        
+
+         // Append the close icon to the box
+        boxElement.appendChild(closeIcon);
+ 
+         // Add the city name and temperature
+        const textElement = document.createElement('p');
+        textElement.innerText = `Name: ${this.cityName}\nTemperature: ${this.temp}`;
+        boxElement.appendChild(textElement);
+        
+        // document.body.appendChild(boxElement);
+        return boxElement;
+    }
 };
