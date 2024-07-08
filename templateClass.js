@@ -1,5 +1,5 @@
 export default class Template{
-    constructor(id,cityName,temp){
+    constructor(id,cityName,temp,){
         this.id = id;
         this.cityName = cityName;
         this.temp = temp;
@@ -8,15 +8,22 @@ export default class Template{
     createBox() {
         // Create a div element for the box
         const boxElement = document.createElement('div');
-        boxElement.id = this.id;
-        boxElement.style.border = '1px solid black';
-        boxElement.style.padding = '10px';
-        // boxElement.style.margin = '10px';
+        boxElement.classList.add('template_box');
 
+         // Create a span for the close icon
+         const closeIcon = document.createElement('span');
+         closeIcon.innerHTML = '&times;'; // HTML entity for '×'
+         closeIcon.classList.add('close_icon');
+         closeIcon.style.cursor = 'pointer'; // Make the icon look clickable
+ 
+         // Append the close icon to the box
+         boxElement.appendChild(closeIcon);
+ 
+         // Add the city name and temperature
+         const textElement = document.createElement('p');
+         textElement.innerText = `Name: ${this.cityName}\nTemperature: ${this.temp}`;
+         boxElement.appendChild(textElement);
         
-        boxElement.innerText = `Name: ${this.cityName}/nTemperature: ${this.temp}`;
-    
-        // Append the box to the body (or any other container)
         // document.body.appendChild(boxElement);
         return boxElement;
       }

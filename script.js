@@ -85,8 +85,14 @@ const cityArray = [];
 plusIcon.addEventListener("click", async () => {
     const city = searchBox.value;
     if (city && !cityArray.some(item => item.city === city)) {
+        if(cityArray.length >= 3){
+            alert("You can only add up to 3 cities");
+            return;
+        }
+
         const weatherData = await getWeatherByCity(city);
         if (weatherData) {
+
             cityArray.push({ city, data: weatherData });
             console.log(cityArray);
 
@@ -96,13 +102,14 @@ plusIcon.addEventListener("click", async () => {
             cityArray.forEach((item, index) => {
                 const temp = item.data.main.temp; // Access temperature correctly
                 const cityName = item.data.name; // Access city name correctly
-                const template = new Template(`city-${index}`, cityName, temp);
+                const template = new Template(`city-${index}`, cityName, temp,);
                 const newBox = template.createBox();
                 cityContainer.appendChild(newBox);
             });
         }
     }
 });
+
 
 
 
@@ -165,6 +172,7 @@ function updateWeathericon(data) {
 
     weather_icon.src = iconSrc;
     document.querySelector(".card").style.background = bgGradient;
+    // document.querySelector(".container").style.background = bgGradient;
 }
 
 // update weather data every 1 minute
