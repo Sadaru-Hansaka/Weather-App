@@ -1,17 +1,11 @@
-
-// API key and API url
+// weather.js
 const apiKey = "4b5ee782cafe18a02317076e6a68e150";
 const apiUrl = "https://api.openweathermap.org/data/2.5/weather?units=metric";
 
-const searchBox = document.querySelector(".search input");
-const searchbtn = document.querySelector(".search-btn");
-const weather_icon = document.querySelector(".weather-icon");
-const plusIcon = document.querySelector(".plus-icon");
-
 let currentWeatherData;
+let cityTimeOffset;
 
-// get location by village,city,country
-async function getWeatherByCity(city) {
+export async function getWeatherByCity(city) {
     const geocodeUrl = `https://api.openweathermap.org/geo/1.0/direct?q=${encodeURIComponent(city)}&limit=5&appid=${apiKey}`;
     try {
         const geocodeResp = await fetch(geocodeUrl);
@@ -20,8 +14,6 @@ async function getWeatherByCity(city) {
 
         if (geocodeData.length > 0) {
             const { lat, lon, name, country } = geocodeData[0];  // Use the first result
-            console.log(`Using location: ${name}, ${country} (${lat}, ${lon})`);
-            getWeather(lat, lon);
             document.querySelector(".city").innerHTML = `${name}, ${country}`;
             return await getWeather(lat, lon);
         } else {
@@ -34,11 +26,9 @@ async function getWeatherByCity(city) {
     return null;
 }
 
-async function getWeather(lat, lon) {
-    // fetch API
+export async function getWeather(lat, lon) {
     const resp = await fetch(`${apiUrl}&lat=${lat}&lon=${lon}&appid=${apiKey}`);
     
-    // error handling
     if (resp.status === 404) {
         showError();
     } else {
@@ -49,94 +39,31 @@ async function getWeather(lat, lon) {
     return null;
 }
 
-
-
 function displayWeather(data) {
     cityTimeOffset = data.timezone;
 
     console.log(data);
-    // display weather
     document.querySelector(".temp").innerHTML = Math.round(data.main.temp) + "°C";
     document.querySelector(".humidity").innerHTML = data.main.humidity + "%";
     document.querySelector(".wind").innerHTML = data.wind.speed + "km/h";
 
     currentWeatherData = data;
-    updateWeathericon(data);
+    updateWeatherIcon(data);
 
     document.querySelector(".weather").style.display = "block";
     document.querySelector(".error").style.display = "none";
 }
 
-// error
 function showError() {
     document.querySelector(".error").style.display = "block";
     document.querySelector(".weather").style.display = "none";
 }
 
-// eventlistner to search button
-searchbtn.addEventListener("click", () => {
-    const city = searchBox.value;
-    getWeatherByCity(city);
-});
-
-
-const cityArray = [];
-
-plusIcon.addEventListener("click", async () => {
-    const city = searchBox.value;
-    if (city && !cityArray.some(item => item.city === city)) {
-        if(cityArray.length >= 3){
-            alert("You can only add up to 3 cities");
-            return;
-        }
-
-        const weatherData = await getWeatherByCity(city);
-        if (weatherData) {
-
-            cityArray.push({ city, data: weatherData });
-            console.log(cityArray);
-
-            const cityContainer = document.querySelector(".right-side");
-            cityContainer.innerHTML = ''; // Clear the previous content
-
-            cityArray.forEach((item, index) => {
-                const temp = item.data.main.temp; // Access temperature correctly
-                const cityName = item.data.name; // Access city name correctly
-                const template = new Template(`city-${index}`, cityName, temp,);
-                const newBox = template.createBox();
-                cityContainer.appendChild(newBox);
-            });
-        }
-    }
-});
-
-
-// ---------------------------------------------------------------------------------------
-
-// Update data every 1 minute
-setInterval(() => {
-    const currentLocation = searchBox.value;
-    if (currentLocation) {
-        getWeatherByCity(currentLocation);
-    }
-}, 60000); // 1 minute
-
-// Get time and date according to the city
-setInterval(() => {
-    const cityTime = getCityTime();
-    const time = cityTime.toLocaleTimeString();
-    const date = cityTime.toLocaleDateString();
-    document.querySelector(".Time").innerHTML = time;
-    document.querySelector(".Date").innerHTML = date;
-}, 1000);
-
-function updateWeathericon(data) {
-    // get date and time according to the city
+function updateWeatherIcon(data) {
     const currentTime = new Date().getTime() / 1000;
     const sunrise_time = data.sys.sunrise;
     const sunset_time = data.sys.sunset;
 
-    // weather description
     const des = data.weather[0].description;
     console.log(des);
     document.querySelector(".description").innerHTML = des;
@@ -144,7 +71,6 @@ function updateWeathericon(data) {
     let iconSrc = '';
     let bgGradient = '';
 
-    // change background color and weather icon according to the weather data
     if (data.weather[0].main == "Clouds") {
         iconSrc = currentTime >= sunrise_time && currentTime <= sunset_time ? "images/day-clouds.png" : "images/night-clouds.png";
         bgGradient = currentTime >= sunrise_time && currentTime <= sunset_time ? "linear-gradient(to bottom, #0072ff, #00c6ff)" : "linear-gradient(to bottom, #0f0c29, #302b63, #24243e)";
@@ -165,73 +91,15 @@ function updateWeathericon(data) {
         bgGradient = currentTime >= sunrise_time && currentTime <= sunset_time ? "linear-gradient(to bottom, #0072ff, #00c6ff)" : "linear-gradient(to bottom, #0f0c29, #302b63, #24243e)";
     }
 
-    weather_icon.src = iconSrc;
+    document.querySelector(".weather-icon").src = iconSrc;
     document.querySelector(".card").style.background = bgGradient;
-    // document.querySelector(".container").style.background = bgGradient;
 }
 
-// update weather data every 1 minute
-setInterval(() => {
-    if (currentWeatherData) {
-        updateWeathericon(currentWeatherData);
-    }
-}, 60000);
-
-
-// get time according to the city
-let cityTimeOffset;
-function getCityTime() {
+export function getCityTime() {
     const d = new Date();
     const localTime = d.getTime();
     const localOffset = d.getTimezoneOffset() * 60000;
     const utc = localTime + localOffset;
     const cityTime = new Date(utc + (cityTimeOffset * 1000));
     return cityTime;
-};
-
-
-class Template{
-    constructor(id,cityName,temp,){
-        this.id = id;
-        this.cityName = cityName;
-        this.temp = temp;
-    }
-
-    createBox() {
-        // Create a div element for the box
-        const boxElement = document.createElement('div');
-        boxElement.classList.add('template_box');
-
-         // Create a span for the close icon
-        const closeIcon = document.createElement('span');
-        closeIcon.innerHTML = '&times;'; // HTML entity for '×'
-        closeIcon.classList.add('close_icon');
-        closeIcon.style.cursor = 'pointer'; // Make the icon look clickable
- 
-        closeIcon.addEventListener('click', () => {
-            console.log("Clicked")
-            boxElement.remove();
-            cityArray.splice(this.cityName,1);
-            console.log(cityArray);
-
-            // const index = cityArray.findIndex(item => item.city === this.cityName);
-            // if (index !== -1) {
-            //     cityArray.splice(index, 1);
-            //     console.log(cityArray);
-            // }
-        });
-
-        
-
-         // Append the close icon to the box
-        boxElement.appendChild(closeIcon);
- 
-         // Add the city name and temperature
-        const textElement = document.createElement('p');
-        textElement.innerText = `Name: ${this.cityName}\nTemperature: ${this.temp}`;
-        boxElement.appendChild(textElement);
-        
-        // document.body.appendChild(boxElement);
-        return boxElement;
-    }
-};
+}
