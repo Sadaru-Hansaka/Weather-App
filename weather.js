@@ -10,7 +10,7 @@ export async function getWeatherByCity(city) {
     try {
         const geocodeResp = await fetch(geocodeUrl);
         const geocodeData = await geocodeResp.json();
-        console.log('Geocode Response:', geocodeData);  // Log the geocoding response for debugging
+        //console.log('Geocode Response:', geocodeData);  // Log the geocoding response for debugging
 
         if (geocodeData.length > 0) {
             const { lat, lon, name, country } = geocodeData[0];  // Use the first result
@@ -42,7 +42,7 @@ export async function getWeather(lat, lon) {
 function displayWeather(data) {
     cityTimeOffset = data.timezone;
 
-    console.log(data);
+    //console.log(data);
     document.querySelector(".temp").innerHTML = Math.round(data.main.temp) + "°C";
     document.querySelector(".humidity").innerHTML = data.main.humidity + "%";
     document.querySelector(".wind").innerHTML = data.wind.speed + "km/h";
@@ -65,7 +65,7 @@ function updateWeatherIcon(data) {
     const sunset_time = data.sys.sunset;
 
     const des = data.weather[0].description;
-    console.log(des);
+    //console.log(des);
     document.querySelector(".description").innerHTML = des;
 
     let iconSrc = '';

@@ -1,8 +1,8 @@
 // template.js
 export class Template {
-    constructor(id, cityName, temp,cityArray) {
-        this.id = id;
+    constructor(cityName, country,temp,cityArray) {
         this.cityName = cityName;
+        this.country = country;
         this.temp = temp;
         this.cityArray = cityArray;
     }
@@ -17,21 +17,23 @@ export class Template {
         closeIcon.style.cursor = 'pointer'; // Make the icon look clickable
 
         closeIcon.addEventListener('click', () => {
-            console.log("Clicked")
+            
+            const index = this.cityArray.findIndex(item => item.city === this.cityName);
+            console.log(`Index of ${this.cityName}`, index);
+
+            if (index > -1) {
+                this.cityArray.splice(index, 1); // Remove the item from the array
+            }
+
             boxElement.remove();
-            this.cityArray.splice(this.cityName, 1);
-            console.log(this.cityArray);
-            // const index = this.cityArray.findIndex(item => item.city === this.cityName);
-            // if (index !== -1) {
-            //     this.cityArray.splice(index, 1);
-            //     console.log(this.cityArray);
-            // }
+            
+            
         });
 
         boxElement.appendChild(closeIcon);
 
         const textElement = document.createElement('p');
-        textElement.innerText = `Name: ${this.cityName}\nTemperature: ${this.temp}`;
+        textElement.innerText = `Name: ${this.cityName}\nCountry: ${this.country}\nTemperature: ${this.temp}`;
         boxElement.appendChild(textElement);
         
         return boxElement;
@@ -49,16 +51,19 @@ export function handleWeathercard(plusIcon, searchBox,cityArray,getWeatherByCity
     
             const weatherData = await getWeatherByCity(city);
             if (weatherData) {
-                cityArray.push({ city, data: weatherData });
+                const cityName = weatherData.name;
+                cityArray.push({city : cityName, data : weatherData});
                 console.log(cityArray);
     
                 const cityContainer = document.querySelector(".right-side");
                 cityContainer.innerHTML = ''; // Clear the previous content
     
-                cityArray.forEach((item, index) => {
-                    const temp = item.data.main.temp; // Access temperature correctly
+                cityArray.forEach((item) => {
+                    //const temp = item.data.main.temp; // Access temperature correctly
                     const cityName = item.data.name; // Access city name correctly
-                    const template = new Template(`city-${index}`, cityName, temp,cityArray);
+                    const couuntry = item.data.sys.country;
+                    const temp = item.data.main.temp;
+                    const template = new Template(cityName,couuntry, temp,cityArray);
                     const newBox = template.createBox();
                     cityContainer.appendChild(newBox);
                 });
