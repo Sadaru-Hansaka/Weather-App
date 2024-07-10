@@ -7,6 +7,7 @@ const searchBox = document.querySelector(".search input");
 const searchBtn = document.querySelector(".search-btn");
 const plusIcon = document.querySelector(".plus-icon");
 
+
 let currentWeatherData;
 const cityArray = [];
 

@@ -19,7 +19,6 @@ export class Template {
         closeIcon.addEventListener('click', () => {
             
             const index = this.cityArray.findIndex(item => item.city === this.cityName);
-            console.log(`Index of ${this.cityName}`, index);
 
             if (index > -1) {
                 this.cityArray.splice(index, 1); // Remove the item from the array
@@ -42,6 +41,7 @@ export class Template {
 
 export function handleWeathercard(plusIcon, searchBox,cityArray,getWeatherByCity,getCityTime) {
     plusIcon.addEventListener("click", async () => {
+        document.querySelector(".right-side").style.display = "block";
         const city = searchBox.value;
         if (city && !cityArray.some(item => item.city === city)) {
             if (cityArray.length >= 3) {
@@ -53,13 +53,11 @@ export function handleWeathercard(plusIcon, searchBox,cityArray,getWeatherByCity
             if (weatherData) {
                 const cityName = weatherData.name;
                 cityArray.push({city : cityName, data : weatherData});
-                console.log(cityArray);
     
                 const cityContainer = document.querySelector(".right-side");
                 cityContainer.innerHTML = ''; // Clear the previous content
     
                 cityArray.forEach((item) => {
-                    //const temp = item.data.main.temp; // Access temperature correctly
                     const cityName = item.data.name; // Access city name correctly
                     const couuntry = item.data.sys.country;
                     const temp = item.data.main.temp;

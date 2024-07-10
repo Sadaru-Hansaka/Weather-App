@@ -16,10 +16,11 @@ body{
     border-radius: 20px;
     /* padding: 40px 35px; */
     text-emphasis: center;
+    justify-content: center;
 }
 
 .left-side{
-    display: flex;
+    /* display: flex; */
     width: 50%;
     height: 100%;
     border-radius: 20px 0 0 20px;
@@ -41,7 +42,12 @@ body{
     padding: 0;
     
 }
-
+/* .left-side, .right-side{
+    transition: width 0.6s ease;
+} */
+.right-side{
+    display: none;
+}
 /* search bar and display weather part */
 .card{
     /* width: 90%; */
@@ -155,13 +161,24 @@ body{
 
 
 /* ------------------------ */
+
 .template_box{
-    /* display: none; */
+    display: flex;
+    flex-direction: column;
+    /* justify-content: center; */
+    /* align-items: center; */
     width: 100%;
     height: 170px;
     border: 1px solid #ccc;
     padding: 10px;
     margin: 20px;
     border-radius: 5px;
-    text-align: center;
+}
+
+.close_icon{
+    color: red;
+    text-align: right;
+    cursor: pointer;
+    align-items: flex-end;
+
 }
