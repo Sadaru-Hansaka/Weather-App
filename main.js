@@ -34,6 +34,7 @@ setInterval(() => {
     document.querySelector(".Date").innerHTML = date;
 }, 1000);
 
+
 setInterval(() => {
     if (currentWeatherData) {
         updateWeatherIcon(currentWeatherData);

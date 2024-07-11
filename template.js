@@ -1,11 +1,14 @@
 // template.js
 export class Template {
-    constructor(cityName, country,temp,cityArray,weather) {
+    constructor(cityName, country,temp,cityArray,weather,sunrise,sunset,weath_des) {
         this.cityName = cityName;
         this.country = country;
         this.temp = temp;
         this.cityArray = cityArray;
         this.weather = weather;
+        this.sunrise = sunrise;
+        this.sunset = sunset;
+        this.weath_des = weath_des;
     }
 
     createBox() {
@@ -40,37 +43,76 @@ export class Template {
         const weath = this.weather;
         const weahterImg = document.createElement('img');
         weahterImg.classList.add('template_img');
+
+        const currentTime = new Date().getTime() / 1000;
+        
         
         switch(weath){
             case "Clouds":
-                weahterImg.src = '../images/day-clouds.png';
-                weahterImg.alt = 'Clouds';
-                imageElement.appendChild(weahterImg);
+                if(currentTime >= this.sunrise && currentTime <= this.sunset){
+                    weahterImg.src = '../images/day-clouds.png';
+                    weahterImg.alt = 'Clouds';
+                    imageElement.appendChild(weahterImg);
+                }else{
+                    weahterImg.src = '../images/night-clouds.png';
+                    weahterImg.alt = 'Clouds';
+                    imageElement.appendChild(weahterImg);
+                }
                 break;
             case "Rain":
-                weahterImg.src = '../images/day-rain.png';
-                weahterImg.alt = 'Rain';
-                imageElement.appendChild(weahterImg);
+                if(currentTime >= this.sunrise && currentTime <= this.sunset){
+                    weahterImg.src = '../images/day-rain.png';
+                    weahterImg.alt = 'Rain';
+                    imageElement.appendChild(weahterImg);
+                }else{
+                    weahterImg.src = '../images/night-rain.png';
+                    weahterImg.alt = 'Rain';
+                    imageElement.appendChild(weahterImg);
+                }
                 break;
             case "Clear":
-                weahterImg.src = '../images/day-clear.png';
-                weahterImg.alt = 'Clear';
-                imageElement.appendChild(weahterImg);
+                if(currentTime >= this.sunrise && currentTime <= this.sunset){
+                    weahterImg.src = '../images/day-clear.png';
+                    weahterImg.alt = 'Clear';
+                    imageElement.appendChild(weahterImg);
+                }else{
+                    weahterImg.src = '../images/night-clear.png';
+                    weahterImg.alt = 'Clear';
+                    imageElement.appendChild(weahterImg);
+                }
                 break;
             case "Snow":
-                weahterImg.src = '../images/day-snow.png';
-                weahterImg.alt = 'Snow';
-                imageElement.appendChild(weahterImg);
+                if(currentTime >= this.sunrise && currentTime <= this.sunset){
+                    weahterImg.src = '../images/day-snow.png';
+                    weahterImg.alt = 'Snow';
+                    imageElement.appendChild(weahterImg);
+                }else{
+                    weahterImg.src = '../images/night-snow.png';
+                    weahterImg.alt = 'Snow';
+                    imageElement.appendChild(weahterImg);
+                }
                 break;
             case "Drizzle":
-                weahterImg.src = '../images/day-drizzle.png';
-                weahterImg.alt = 'Drizzle';
-                imageElement.appendChild(weahterImg);
+                if(currentTime >= this.sunrise && currentTime <= this.sunset){
+                    weahterImg.src = '../images/day-drizzle.png';
+                    weahterImg.alt = 'Drizzle';
+                    imageElement.appendChild(weahterImg);
+                }else{
+                    weahterImg.src = '../images/night-drizzle.png';
+                    weahterImg.alt = 'Drizzle';
+                    imageElement.appendChild(weahterImg);
+                }
                 break;
             case "Mist":
-                weahterImg.src = '../images/day-mist.png';
-                weahterImg.alt = 'mist';
-                imageElement.appendChild(weahterImg);
+                if(currentTime >= this.sunrise && currentTime <= this.sunset){
+                    weahterImg.src = '../images/day-mist.png';
+                    weahterImg.alt = 'Mist';
+                    imageElement.appendChild(weahterImg);
+                }else{
+                    weahterImg.src = '../images/night-mist.png';
+                    weahterImg.alt = 'Mist';
+                    imageElement.appendChild(weahterImg);
+                }
                 break;
             default:
                 imageElement.innerText=`Name: ${this.weather}`;
@@ -80,8 +122,16 @@ export class Template {
         template_container.appendChild(imageElement);
 
         const textElement = document.createElement('div');
-        textElement.classList.add('template-text');
-        textElement.innerText = `Name: ${this.cityName}\nCountry: ${this.country}\nTemperature: ${this.temp}\nWeather: ${this.weather}`;
+
+        const title_name = document.createElement('h1');
+        title_name.innerText = `${this.cityName},${this.country}`;
+        textElement.appendChild(title_name);
+
+        const title_temp = document.createElement('h2');
+        const temP = Math.round(this.temp);
+        title_temp.innerText = `${temP} °C  (${this.weath_des})`;
+        textElement.appendChild(title_temp);
+
         template_container.appendChild(textElement);
 
         boxElement.appendChild(template_container);
@@ -112,8 +162,12 @@ export function handleWeathercard(plusIcon, searchBox,cityArray,getWeatherByCity
                     const cityName = item.data.name; // Access city name correctly
                     const couuntry = item.data.sys.country;
                     const temp = item.data.main.temp;
+                    const sunset = item.data.sys.sunset;
+                    const sunrise = item.data.sys.sunrise;
+                    
                     const weather = item.data.weather[0].main;
-                    const template = new Template(cityName,couuntry, temp,cityArray,weather);
+                    const weath_des = item.data.weather[0].description;
+                    const template = new Template(cityName,couuntry, temp,cityArray,weather,sunrise,sunset,weath_des);
                     const newBox = template.createBox();
                     cityContainer.appendChild(newBox);
                 });
