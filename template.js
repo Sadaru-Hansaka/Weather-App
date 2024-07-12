@@ -129,7 +129,7 @@ export class Template {
 
         const title_temp = document.createElement('h2');
         const temP = Math.round(this.temp);
-        title_temp.innerText = `${temP} °C  (${this.weath_des})`;
+        title_temp.innerText = `${temP} °C  \n(${this.weath_des})`;
         textElement.appendChild(title_temp);
 
         template_container.appendChild(textElement);
@@ -143,35 +143,42 @@ export class Template {
 export function handleWeathercard(plusIcon, searchBox,cityArray,getWeatherByCity,getCityTime) {
     plusIcon.addEventListener("click", async () => {
         document.querySelector(".right-side").style.display = "block";
+        
         const city = searchBox.value;
-        if (city && !cityArray.some(item => item.city === city)) {
-            if (cityArray.length >= 3) {
-                alert("You can only add up to 3 cities");
-                return;
-            }
-    
-            const weatherData = await getWeatherByCity(city);
-            if (weatherData) {
-                const cityName = weatherData.name;
+
+        const weatherData = await getWeatherByCity(city);
+        if (weatherData) {
+
+            const cityName = weatherData.name;
+            if (city && !cityArray.some(item => item.city === cityName)) {
+                if (cityArray.length >= 3) {
+                    alert("You can only add up to 3 cities");
+                    return;
+                }
+                
                 cityArray.push({city : cityName, data : weatherData});
-    
+                    
+                    
                 const cityContainer = document.querySelector(".right-side");
                 cityContainer.innerHTML = ''; // Clear the previous content
-    
+        
                 cityArray.forEach((item) => {
                     const cityName = item.data.name; // Access city name correctly
                     const couuntry = item.data.sys.country;
                     const temp = item.data.main.temp;
                     const sunset = item.data.sys.sunset;
                     const sunrise = item.data.sys.sunrise;
-                    
+                        
                     const weather = item.data.weather[0].main;
                     const weath_des = item.data.weather[0].description;
                     const template = new Template(cityName,couuntry, temp,cityArray,weather,sunrise,sunset,weath_des);
                     const newBox = template.createBox();
                     cityContainer.appendChild(newBox);
                 });
+            }else{
+                alert("City already added");
             }
-        }
+        };
     });
-}
+        
+};
