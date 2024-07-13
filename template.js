@@ -50,66 +50,66 @@ export class Template {
         switch(weath){
             case "Clouds":
                 if(currentTime >= this.sunrise && currentTime <= this.sunset){
-                    weahterImg.src = '../images/day-clouds.png';
+                    weahterImg.src = 'images/day-clouds.png';
                     weahterImg.alt = 'Clouds';
                     imageElement.appendChild(weahterImg);
                 }else{
-                    weahterImg.src = '../images/night-clouds.png';
+                    weahterImg.src = 'images/night-clouds.png';
                     weahterImg.alt = 'Clouds';
                     imageElement.appendChild(weahterImg);
                 }
                 break;
             case "Rain":
                 if(currentTime >= this.sunrise && currentTime <= this.sunset){
-                    weahterImg.src = '../images/day-rain.png';
+                    weahterImg.src = 'images/day-rain.png';
                     weahterImg.alt = 'Rain';
                     imageElement.appendChild(weahterImg);
                 }else{
-                    weahterImg.src = '../images/night-rain.png';
+                    weahterImg.src = 'images/night-rain.png';
                     weahterImg.alt = 'Rain';
                     imageElement.appendChild(weahterImg);
                 }
                 break;
             case "Clear":
                 if(currentTime >= this.sunrise && currentTime <= this.sunset){
-                    weahterImg.src = '../images/day-clear.png';
+                    weahterImg.src = 'images/day-clear.png';
                     weahterImg.alt = 'Clear';
                     imageElement.appendChild(weahterImg);
                 }else{
-                    weahterImg.src = '../images/night-clear.png';
+                    weahterImg.src = 'images/night-clear.png';
                     weahterImg.alt = 'Clear';
                     imageElement.appendChild(weahterImg);
                 }
                 break;
             case "Snow":
                 if(currentTime >= this.sunrise && currentTime <= this.sunset){
-                    weahterImg.src = '../images/day-snow.png';
+                    weahterImg.src = 'images/day-snow.png';
                     weahterImg.alt = 'Snow';
                     imageElement.appendChild(weahterImg);
                 }else{
-                    weahterImg.src = '../images/night-snow.png';
+                    weahterImg.src = 'images/night-snow.png';
                     weahterImg.alt = 'Snow';
                     imageElement.appendChild(weahterImg);
                 }
                 break;
             case "Drizzle":
                 if(currentTime >= this.sunrise && currentTime <= this.sunset){
-                    weahterImg.src = '../images/day-drizzle.png';
+                    weahterImg.src = 'images/day-drizzle.png';
                     weahterImg.alt = 'Drizzle';
                     imageElement.appendChild(weahterImg);
                 }else{
-                    weahterImg.src = '../images/night-drizzle.png';
+                    weahterImg.src = 'images/night-drizzle.png';
                     weahterImg.alt = 'Drizzle';
                     imageElement.appendChild(weahterImg);
                 }
                 break;
             case "Mist":
                 if(currentTime >= this.sunrise && currentTime <= this.sunset){
-                    weahterImg.src = '../images/day-mist.png';
+                    weahterImg.src = 'images/day-mist.png';
                     weahterImg.alt = 'Mist';
                     imageElement.appendChild(weahterImg);
                 }else{
-                    weahterImg.src = '../images/night-mist.png';
+                    weahterImg.src = 'images/night-mist.png';
                     weahterImg.alt = 'Mist';
                     imageElement.appendChild(weahterImg);
                 }
