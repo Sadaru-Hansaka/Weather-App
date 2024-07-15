@@ -12,10 +12,7 @@ This Weather Forecasting Application provides real-time weather information for 
 
 ## Usage
 1. **Search for a City**
-    - Enter the name of the city and the country in the search bar and click the search button.
-    Ex :-
-        -Colombo,lk
-        -Tokyo,Japan
+    - Enter the name of the city and the country in the search bar and click the search button. [Colombo,lk / Tokyo,Japan]
     - The application will display the current weather conditions for the specified city.
 
 2. **Save Cities**
