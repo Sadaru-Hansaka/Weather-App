@@ -11,10 +11,26 @@ const plusIcon = document.querySelector(".plus-icon");
 let currentWeatherData;
 const cityArray = [];
 
-searchBtn.addEventListener("click", () => {
+// searchBtn.addEventListener("click", () => {
+//     const city = searchBox.value;
+//     getWeatherByCity(city);
+// });
+
+function triggerSearch() {
     const city = searchBox.value;
     getWeatherByCity(city);
+}
+
+// Event listener for search button click
+searchBtn.addEventListener("click", triggerSearch);
+
+// Event listener for Enter key press
+searchBox.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
+        triggerSearch();
+    }
 });
+
 
 handleWeathercard(plusIcon, searchBox,cityArray,getWeatherByCity,getCityTime);
 
